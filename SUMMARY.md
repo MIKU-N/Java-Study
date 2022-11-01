@@ -26,9 +26,11 @@
     * [10.20-多线程](docs/JAVA/10.20-多线程.md)
 
   * MySql
-    * 
+    * [10.26-MySQL基础](docs/MySql/10.26-MySQL基础.md)
+    * [10.27-基础查询与条件查询](docs/MySql/10.27-基础查询与条件查询.md)
 
 * [test](test/README.md)
   * [每周练习](test/每周练习.md)
   * [语法基础练习](test/语法基础练习.md)
   * [第一阶段重构案例](test/第一阶段重构案例.md)
+  * [MySQL基础练习](test/MySQL基础练习.md)
