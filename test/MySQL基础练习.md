@@ -83,8 +83,8 @@ from scoreinfo;
 ```mysql
 select stuno,classno,score
 from scoreinfo
-where score
-in(91,95);
+where classno=001
+and score in(91,95);
 ```
 
 7、查询所有姓名包含'孙'的学生信息
@@ -132,7 +132,7 @@ from studentinfo;
 ```mysql
 select *
 from studentinfo
-where year(stubirth)>=1987;
+where year(stubirth)>1987;
 ```
 
 1、给定一个数据123.456,按照指定格式显示,
@@ -208,6 +208,5 @@ having sum(score)>250;
 
 ```mysql
 select adddate(now(),interval -1 day),now(),adddate(now(),interval 1 day)  from dual;
-
 ```
 
