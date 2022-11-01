@@ -85,7 +85,7 @@ from emp_test;
 //查询有哪些职位
 
 ```mysql
-sele
+select 
 ```
 
 
