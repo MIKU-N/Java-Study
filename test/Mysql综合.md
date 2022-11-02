@@ -65,7 +65,7 @@ select ename,salary,salary*12 年工资 from emp_test;
 //查询员工的月薪
 
 ```mysql
-select ename from emp_test;
+select ename,salary from emp_test;
 ```
 
 //查询员工姓名、职位，如果没有职位则显示"No Position"
@@ -78,47 +78,276 @@ from emp_test;
 //查询员工信息，要求将员工姓名和职位连接在一起
 
 ```mysql
-select concat(ename,ifnull(position,"No Position")
+select concat(ename,ifnull(position,"No Position"))
 from emp_test;
 ```
 
 //查询有哪些职位
 
 ```mysql
-select 
+select distinct position from emp_test;
+```
+
+//查询每个部门不重复的职位
+
+```mysql
+select deptno,group_concat(position)
+from emp_test
+group by deptno;
+```
+
+//查询职位为'开发人员'的员工信息
+
+```mysql
+select *
+from emp_test
+where position="开发人员";
+```
+
+//查询薪水大于等于5000并且小于10000的员工信息
+
+```mysql
+select * 
+from emp_test
+where salary
+between 5000
+and 10000;
+```
+
+//查询职位是'测试人员'或者'开发人员'的员工姓名和职位
+
+```mysql
+select ename,position
+from emp_test
+where position
+in("测试人员","开发人员");
+```
+
+//查询员工姓名中包含'张'字员工信息
+
+```mysql
+select *
+from emp_test
+where ename like "%张%";
+```
+
+//查询职位中第2个字符是'张'的员工姓名和职位
+
+```mysql
+select *
+from emp_test
+where ename like "_张%";
+```
+
+//查询哪些员工没有奖金
+
+```mysql
+select ename,bonus
+from emp_test
+where bonus is null;
+```
+
+//查询哪些员工有奖金
+
+```mysql
+select ename,bonus
+from emp_test
+where bonus is not null;
+```
+
+//查询薪水不在5000到10000之间的员工
+
+```mysql
+select ename,salary
+from emp_test
+where salary not
+between 5000
+and 10000;
+```
+
+//查询不是20号部门和30号部门的员工信息	
+
+```mysql
+select *
+from emp_test
+where deptno
+not in("20","30");
+```
+
+//查询员工表中薪水总和
+
+```mysql
+select sum(ifnull(salary,0) 薪水综合
+from emp_test;
+```
+
+//查询员工表中人数总和、薪水总和、平均薪水
+
+```mysql
+select count(ename) 总人数,sum(salary) 总薪水,avg(ifnull(salary,0)) 平均薪水
+from emp_test;
+
+```
+
+//查询员工表中最高薪水、最低薪水
+
+```mysql
+select max(salary),min(salary)
+from emp_test;
+```
+
+//查询员工姓名和薪水，要求薪水从低到高进行排序
+
+```mysql
+select ename,salary
+from emp_test
+order by salary asc;
+```
+
+//按照部门号升序，同一个部门按照薪水降序
+
+```mysql
+select deptno,ename,salary
+from emp_test
+order by deptno asc,salary desc;
+```
+
+//查询每个部门的最高薪水和最低薪水，要求没有部门的不算在内
+
+```mysql
+select deptno,max(salary),min(salary)
+from emp_test
+where deptno is not null
+group by deptno;
+```
+
+//查询每个部门的薪水总和和平均薪水，要求没有部门的不算在内
+
+```mysql
+select deptno,sum(salary),avg(salary)
+from emp_test
+where deptno is not null
+group by deptno;
+```
+
+//按照职位分组，每个职位的最高薪水、最低薪水、人数总和，要求没有职位的不算在内
+
+```mysql
+select position,max(salary),min(salary),count(position)
+from emp_test
+where position is not null
+group by position;
+```
+
+//查询平均薪水大于5000的部门和平均薪水，没有部门的不算在内
+
+```mysql
+select position,avg(salary)
+from emp_test
+group by position
+having avg(salary)>5000;
+```
+
+//查询每个部门的平均薪水
+
+```mysql
+select position,avg(salary)
+from emp_test
+group by position;
+```
+
+//查询薪水总和大于20000的部门号和薪水总和，要求没有部门的不算在内  
+
+```mysql
+select position,avg(salary)
+from emp_test
+where position is not null
+group by position
+having avg(salary)>20000;
+```
+
+//查询哪些职位的人数超过2个人，没有职位的不算在内，
+
+```mysql
+select position,count(position)
+from emp_test
+where position is not null
+group by position
+having count(position)>2;
+```
+
+//查询谁的薪水比'张无忌'高 
+
+```mysql
+select ename,salary
+from emp_test
+where salary>all(
+select salary from emp_test where ename="张无忌"
+);
+```
+
+//查询'研发部'有哪些职位
+
+```mysql
+select position
+from emp test
+where 
+```
+
+//查询谁的薪水比'张无忌'高，如果有多个'张无忌'
+
+```mysql
+select ename,salary
+from emp_test
+where salary>all(
+select salary from emp_test where ename="张无忌"
+);
+```
+
+//查询哪些人的薪水比'张无忌'高，如果有多个'张无忌'
+
+```mysql
+select ename,salary
+from emp_test
+where salary>all(
+select salary from emp_test where ename="张无忌"
+);
+```
+
+--查询谁和'郭靖'同部门，列出除了'郭靖'之外的
+
+```mysql
+select ename,deptno
+from emp_test
+where deptno=any(
+select deptno from emp_test where ename="郭靖"
+)and ename !="郭靖";
 ```
 
 
 
-//查询每个部门不重复的职位
-//查询职位为'开发人员'的员工信息
-//查询薪水大于等于5000并且小于10000的员工信息
-//查询职位是'测试人员'或者'开发人员'的员工姓名和职位
-//查询员工姓名中包含'张'字员工信息
-//查询职位中第2个字符是'张'的员工姓名和职位
-//查询哪些员工没有奖金
-//查询哪些员工有奖金
-//查询薪水不在5000到10000之间的员工
-//查询不是20号部门和30号部门的员工信息	
-//查询员工表中薪水总和
-//查询员工表中人数总和、薪水总和、平均薪水
-//查询员工表中最高薪水、最低薪水
-//查询员工姓名和薪水，要求薪水从低到高进行排序
-//按照部门号升序，同一个部门按照薪水降序
-//查询每个部门的最高薪水和最低薪水，要求没有部门的不算在内
-//查询每个部门的薪水总和和平均薪水，要求没有部门的不算在内
-//按照职位分组，每个职位的最高薪水、最低薪水、人数总和，要求没有职位的不算在内
-//查询平均薪水大于5000的部门和平均薪水，没有部门的不算在内
-//查询每个部门的平均薪水
-//查询薪水总和大于20000的部门号和薪水总和，要求没有部门的不算在内  
-//查询哪些职位的人数超过2个人，没有职位的不算在内，
-//查询谁的薪水比'张无忌'高 
-//查询'研发部'有哪些职位
-//查询谁的薪水比'张无忌'高，如果有多个'张无忌'
-//查询哪些人的薪水比'张无忌'高，如果有多个'张无忌'
---查询谁和'郭靖'同部门，列出除了'郭靖'之外的
 --查询谁是'张三丰'的下属
+
+```mysql
+select ename
+from emp_test
+where leader=(
+select empno from emp_test where ename="张三丰"
+);
+```
+
 --查询每个部门拿最高薪水的是谁
+
+```mysql
+select ename,deptno,max(salary)
+from emp_test
+where salary is not null
+and deptno is not null
+group by deptno;
+```
+
+
+
 --查询哪些部门的平均薪水比20号部门的平均薪水高
 --查询员工所在部门的平均薪水大于5000的员工姓名和职位
 --查询哪些员工的薪水是本部门的平均薪水
